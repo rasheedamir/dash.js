@@ -33,6 +33,12 @@ MediaPlayer.utils.Debug = function () {
                 type: "log",
                 message: message
             });
+        },
+        emeLog: function (message) {
+            this.eventBus.dispatchEvent( {
+                type: "eme_log",
+                message: message
+            });
         }
     };
 };

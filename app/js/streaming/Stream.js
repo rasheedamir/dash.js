@@ -94,9 +94,12 @@ MediaPlayer.dependencies.Stream = function () {
             //this.debug.log("DRM: Generating key request...");
             //this.protectionModel.generateKeyRequest(DEFAULT_KEY_TYPE, event.initData);
             if (!!contentProtection && !!videoCodec && !kid) {
+                this.debug.emeLog("On Need Key -- video codec = " + videoCodec + ". Selecting key system...");
+
                 try
                 {
                     kid = self.protectionController.selectKeySystem(videoCodec, contentProtection);
+                    this.debug.emeLog("Key system selected.  KID = " + kid);
                 }
                 catch (error)
                 {

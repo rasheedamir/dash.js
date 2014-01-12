@@ -390,6 +390,16 @@ app.controller('DashController', function($scope, Sources, Notes, Contributors, 
         $scope.showDebug = show;
     }
 
+    $scope.showEME = false;
+    $scope.setEMEDebug = function (show) {
+        $scope.showEME = show;
+    }
+
+    $scope.emeDebugData = [];
+    function addEMEDebug (message) {
+        $scope.emeDebugData.push(message.message);
+    }
+
     ////////////////////////////////////////
     //
     // Player Setup
@@ -404,6 +414,7 @@ app.controller('DashController', function($scope, Sources, Notes, Contributors, 
     player.startup();
     player.addEventListener("error", onError.bind(this));
     player.addEventListener("metricChanged", metricChanged.bind(this));
+    player.addEventListener("eme_log", addEMEDebug.bind(this));
 
     player.attachView(video);
     player.setAutoPlay(true);

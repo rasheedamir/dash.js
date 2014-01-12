@@ -161,3 +161,8 @@ chart {
     font-size: 22px;
     color: #555;
 }
+
+#emeDebug {
+    height: 200px;
+    overflow-y: scroll;
+}

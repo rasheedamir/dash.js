@@ -285,6 +285,35 @@
         <div class="row">
             <div class="panel">
                 <div class="panel-heading panel-top">
+                    <span class="panel-title">Encrypted Media Extensions</span>
+                    <div class="btn-group">
+                        <button
+                                type="button"
+                                class="btn btn-default"
+                                ng-class="{active:showEME == false}"
+                                ng-click="setEMEDebug(false)">
+                            Hide
+                        </button>
+                        <button
+                                type="button"
+                                class="btn btn-default"
+                                ng-class="{active:showEME == true}"
+                                ng-click="setEMEDebug(true)">
+                            Show
+                        </button>
+                    </div>
+                </div>
+                <div ng-switch on="showEME">
+                    <div id="emeDebug" class="panel-body panel-stats" ng-switch-when="true">
+                        <p ng-repeat="line in emeDebugData">{{line}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="panel">
+                <div class="panel-heading panel-top">
                     <span class="panel-title">Charts</span>
                     <div class="btn-group">
                         <button
