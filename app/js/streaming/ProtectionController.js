@@ -25,20 +25,39 @@ MediaPlayer.dependencies.ProtectionController = function () {
             var self = this;
 
             for(var ks = 0; ks < keySystems.length; ++ks) {
+                self.debug.emeLog("Checking dash.js keySystem -- " + keySystems[ks].keysTypeString);
                 for(var cp = 0; cp < contentProtection.length; ++cp) {
-                    if (keySystems[ks].isSupported(contentProtection[cp]) &&
-                        self.protectionExt.supportsCodec(keySystems[ks].keysTypeString, codec)) {
+                    self.debug.emeLog("Found ContentProtection scheme in DASH MPD -- " + contentProtection[cp].schemeIdUri);
+                    if (keySystems[ks].isSupported(contentProtection[cp])) {
 
-                        var kid = self.manifestExt.getKID(contentProtection[cp]);
-                        if (!kid) {
-                            kid = "unknown";
+                        self.debug.emeLog("SchemeID supported by dash.js! (Check 1 of 2 successful)");
+
+                        self.debug.emeLog("Checking KeySystem (" + keySystems[ks].keysTypeString + "), codec (" + codec + ")");
+                        if (self.protectionExt.supportsCodec(keySystems[ks].keysTypeString, codec)) {
+
+                            self.debug.emeLog("KeySystem/codec supported by browser! (Check 2 of 2 successful)");
+
+                            var kid = self.manifestExt.getKID(contentProtection[cp]);
+                            if (!kid) {
+                                kid = "unknown";
+                            }
+                            else {
+                                self.debug.emeLog("Found default KID in ContentProtection element");
+                            }
+
+                            self.protectionModel.addKeySystem(kid, contentProtection[cp], keySystems[ks]);
+
+                            self.debug.log("DRM: Selected Key System: " + keySystems[ks].keysTypeString + " For KID: " + kid);
+                            self.debug.emeLog("DRM: Selected Key System: " + keySystems[ks].keysTypeString + " For KID: " + kid);
+
+                            return kid;
                         }
-
-                        self.protectionModel.addKeySystem(kid, contentProtection[cp], keySystems[ks]);
-
-                        self.debug.log("DRM: Selected Key System: " + keySystems[ks].keysTypeString + " For KID: " + kid);
-
-                        return kid;
+                        else {
+                            self.debug.emeLog("KeySystem/codec not supported by browser (MediaKeys)");
+                        }
+                    }
+                    else  {
+                        self.debug.emeLog("SchemeID not supported by dash.js!")
                     }
                 }
             }
@@ -54,22 +73,28 @@ MediaPlayer.dependencies.ProtectionController = function () {
                 return;
             }
 
+            self.debug.emeLog("Creating new KeySession");
+
             initData = self.protectionModel.getInitData(kid);
 
             if (!initData && !!eventInitData) {
                 initData = eventInitData;
                 self.debug.log("DRM: Using initdata from needskey event. length: " + initData.length);
+                self.debug.emeLog("DRM: Using initdata from needskey event. length: " + initData.length);
             }
             else if (!!initData){
                 self.debug.log("DRM: Using initdata from prheader in mpd. length: " + initData.length);
+                self.debug.emeLog("DRM: Using initdata from needskey event. length: " + initData.length);
             }
 
             if (!!initData) {
                 session = self.protectionModel.addKeySession(kid, codec, initData);
                 self.debug.log("DRM: Added Key Session [" + session.sessionId + "] for KID: " + kid + " type: " + codec + " initData length: " + initData.length);
+                self.debug.emeLog("DRM: Added Key Session [" + session.sessionId + "] for KID: " + kid + " type: " + codec + " initData length: " + initData.length);
             }
             else {
                 self.debug.log("DRM: initdata is null.");
+                self.debug.emeLog("DRM: initdata is null.");
             }
         },
 
@@ -79,6 +104,7 @@ MediaPlayer.dependencies.ProtectionController = function () {
             result = self.protectionModel.updateFromMessage(kid, msg, laURL);
             result.then(
                 function (data) {
+                    self.debug.emeLog("Received response from key server.  Calling update() with data length = " + data.length);
                     session.update(data);
             });
             return result;

@@ -99,7 +99,6 @@ MediaPlayer.dependencies.Stream = function () {
                 try
                 {
                     kid = self.protectionController.selectKeySystem(videoCodec, contentProtection);
-                    this.debug.emeLog("Key system selected.  KID = " + kid);
                 }
                 catch (error)
                 {
@@ -122,16 +121,19 @@ MediaPlayer.dependencies.Stream = function () {
                 laURL = null;
 
             this.debug.log("DRM: Got a key message...");
+            this.debug.emeLog("DRM: Got a key message...");
 
             session = event.target;
             bytes = new Uint16Array(event.message.buffer);
             msg = String.fromCharCode.apply(null, bytes);
             laURL = event.destinationURL;
+            this.debug.emeLog("Message URL = " + laURL + ", Message length = " + msg.length);
 
             self.protectionController.updateFromMessage(kid, session, msg, laURL).fail(
                 function (error) {
                     pause.call(self);
                     self.debug.log(error);
+                    self.debug.emeLog("Error when sending keymessage to key server! -- " + error);
                     self.errHandler.mediaKeyMessageError(error);
             });
 
@@ -146,6 +148,7 @@ MediaPlayer.dependencies.Stream = function () {
 
         onMediaSourceKeyAdded = function () {
             this.debug.log("DRM: Key added.");
+            this.debug.emeLog("DRM: Key added.");
         },
 
         onMediaSourceKeyError = function () {
@@ -175,6 +178,7 @@ MediaPlayer.dependencies.Stream = function () {
             msg += "]";
             //pause.call(this);
             this.debug.log(msg);
+            this.debug.emeLog(msg);
             this.errHandler.mediaKeySessionError(msg);
         },
 

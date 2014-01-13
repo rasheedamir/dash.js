@@ -200,6 +200,8 @@ MediaPlayer.dependencies.ProtectionExtensions.prototype = {
                 schemeIdUri: "urn:uuid:9a04f079-9840-4286-ab92-e65be0885f95",
                 keysTypeString: "com.microsoft.playready",
                 isSupported: function (data) {
+                    //self.debug.emeLog("Checking if MS PlayReady is supported...");
+                    //self.debug.emeLog("PlayReady schemeIdURI = " + this.schemeIdUri + ", incoming URI = " + data.schemeIdUri.toLowerCase());
                     return this.schemeIdUri === data.schemeIdUri.toLowerCase();},
                 needToAddKeySession: playReadyNeedToAddKeySession,
                 getInitData: playreadyGetInitData,
@@ -209,6 +211,8 @@ MediaPlayer.dependencies.ProtectionExtensions.prototype = {
                 schemeIdUri: "urn:mpeg:dash:mp4protection:2011",
                 keysTypeString: "com.microsoft.playready",
                 isSupported: function (data) {
+                    //self.debug.emeLog("Checking if MS PlayReady (CENC) is supported...");
+                    //self.debug.emeLog("PlayReady (CENC) schemeIdURI = " + this.schemeIdUri + ", incoming URI = " + data.schemeIdUri.toLowerCase());
                     return this.schemeIdUri === data.schemeIdUri.toLowerCase() && data.value.toLowerCase() === "cenc";},
                 needToAddKeySession: playReadyNeedToAddKeySession,
                 getInitData: function (/*data*/) {
@@ -220,6 +224,8 @@ MediaPlayer.dependencies.ProtectionExtensions.prototype = {
                 schemeIdUri: "urn:uuid:00000000-0000-0000-0000-000000000000",
                 keysTypeString: "webkit-org.w3.clearkey",
                 isSupported: function (data) {
+                    //self.debug.emeLog("Checking if WebKit ClearKey is supported...");
+                    //self.debug.emeLog("WebKit ClearKey schemeIdURI = " + this.schemeIdUri + ", incoming URI = " + data.schemeIdUri.toLowerCase());
                     return this.schemeIdUri === data.schemeIdUri.toLowerCase();},
                 needToAddKeySession: function (/*initData, keySessions*/) {
                     return true;},

@@ -21,6 +21,7 @@ MediaPlayer.models.ProtectionModel = function () {
 
     return {
         system : undefined,
+        debug : undefined,
         videoModel : undefined,
         protectionExt : undefined,
 
@@ -52,6 +53,7 @@ MediaPlayer.models.ProtectionModel = function () {
         addKeySystem: function (kid, contentProtectionData, keySystemDesc) {
             var keysLocal = null;
 
+            this.debug.emeLog("Create and Set MediaKeys for " + keySystemDesc.keysTypeString);
             keysLocal = this.protectionExt.createMediaKeys(keySystemDesc.keysTypeString);
 
             this.protectionExt.setMediaKey(element, keysLocal);
