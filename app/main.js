@@ -383,21 +383,41 @@ app.controller('DashController', function($scope, Sources, Notes, Contributors, 
     $scope.showCharts = false;
     $scope.setCharts = function (show) {
         $scope.showCharts = show;
-    }
+    };
 
     $scope.showDebug = false;
     $scope.setDebug = function (show) {
         $scope.showDebug = show;
-    }
+    };
 
     $scope.showEME = false;
     $scope.setEMEDebug = function (show) {
         $scope.showEME = show;
-    }
+    };
 
     $scope.emeDebugData = [];
     function addEMEDebug (message) {
-        $scope.emeDebugData.push(message.message);
+        var eme_message = message.message;
+        var display_class, log_message, indent;
+        if (eme_message.eme_source === "J") {
+            display_class = "player-text";
+            log_message = "[J] ";
+        }
+        else if (eme_message.eme_source === "V") {
+            display_class = "video-text";
+            log_message = "[V] ";
+        }
+        else if (eme_message.eme_source === "C") {
+            display_class = "cdm-text";
+            log_message = "[C] ";
+        }
+        if (!!eme_message.eme_indent) {
+            display_class =  display_class + " emeLogIndent";
+        }
+        $scope.emeDebugData.push({
+            type: display_class,
+            message: log_message + eme_message.eme_log
+        });
     }
 
     ////////////////////////////////////////

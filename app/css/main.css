@@ -166,3 +166,28 @@ chart {
     height: 300px;
     overflow-y: scroll;
 }
+
+.emeLogIndent {
+    margin-left: 50px;
+}
+
+.cdm-text {
+    background-color: #8bfc85;
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px #9f9f9f;
+}
+
+.player-text {
+    background-color: #c8c8ff;
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px #9f9f9f;
+}
+
+.video-text {
+    background-color: #ffa0c3;
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px #9f9f9f;
+}

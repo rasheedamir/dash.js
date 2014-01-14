@@ -94,7 +94,7 @@ MediaPlayer.dependencies.Stream = function () {
             //this.debug.log("DRM: Generating key request...");
             //this.protectionModel.generateKeyRequest(DEFAULT_KEY_TYPE, event.initData);
             if (!!contentProtection && !!videoCodec && !kid) {
-                this.debug.emeLog("On Need Key -- video codec = " + videoCodec + ". Selecting key system...");
+                this.debug.emeLog("V", "onneedkey event handler called...  MediaKeyNeededEvent (initData[" + event.initData.length + "], type = " + event.type + ")");
 
                 try
                 {
@@ -121,19 +121,18 @@ MediaPlayer.dependencies.Stream = function () {
                 laURL = null;
 
             this.debug.log("DRM: Got a key message...");
-            this.debug.emeLog("DRM: Got a key message...");
 
             session = event.target;
             bytes = new Uint16Array(event.message.buffer);
             msg = String.fromCharCode.apply(null, bytes);
             laURL = event.destinationURL;
-            this.debug.emeLog("Message URL = " + laURL + ", Message length = " + msg.length);
+            this.debug.emeLog("C", "Got a key message... MediaKeyMessageEvent (destinationURL = " + laURL + ", message[" + msg.length + "]");
 
             self.protectionController.updateFromMessage(kid, session, msg, laURL).fail(
                 function (error) {
                     pause.call(self);
                     self.debug.log(error);
-                    self.debug.emeLog("Error when sending keymessage to key server! -- " + error);
+                    self.debug.emeLog("J", "Error when sending message to key server! -- " + error);
                     self.errHandler.mediaKeyMessageError(error);
             });
 
@@ -148,7 +147,7 @@ MediaPlayer.dependencies.Stream = function () {
 
         onMediaSourceKeyAdded = function () {
             this.debug.log("DRM: Key added.");
-            this.debug.emeLog("DRM: Key added.");
+            this.debug.emeLog("C", "keyadded event received!");
         },
 
         onMediaSourceKeyError = function () {
@@ -178,7 +177,7 @@ MediaPlayer.dependencies.Stream = function () {
             msg += "]";
             //pause.call(this);
             this.debug.log(msg);
-            this.debug.emeLog(msg);
+            this.debug.emeLog("J", msg);
             this.errHandler.mediaKeySessionError(msg);
         },
 
@@ -880,9 +879,9 @@ MediaPlayer.dependencies.Stream = function () {
             keyAddedListener = onMediaSourceKeyAdded.bind(this);
             keyErrorListener = onMediaSourceKeyError.bind(this);
 
-            this.protectionModel = this.system.getObject("protectionModel");
+            //this.protectionModel = this.system.getObject("protectionModel");
             this.protectionModel.init(this.getVideoModel());
-            this.protectionController = this.system.getObject("protectionController");
+            //this.protectionController = this.system.getObject("protectionController");
             this.protectionController.init(this.videoModel, this.protectionModel);
 
             this.protectionModel.listenToNeedKey(needKeyListener);

@@ -305,7 +305,11 @@
                 </div>
                 <div ng-switch on="showEME">
                     <div id="emeDebug" class="panel-body panel-stats" ng-switch-when="true">
-                        <p ng-repeat="line in emeDebugData">{{line}}</p>
+                        <span class="panel-title player-text">[J] = Javascript Player</span>
+                        <span class="panel-title video-text">[V] = Video Element</span>
+                        <span class="panel-title cdm-text">[C] = Content Decryption Module (CDM)</span>
+                        <hr>
+                        <p ng-repeat="debug_message in emeDebugData" class="{{debug_message.type}}">{{debug_message.message}}</p>
                     </div>
                 </div>
             </div>

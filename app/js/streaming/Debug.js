@@ -34,10 +34,14 @@ MediaPlayer.utils.Debug = function () {
                 message: message
             });
         },
-        emeLog: function (message) {
+        emeLog: function (source, message, indent) {
             this.eventBus.dispatchEvent( {
                 type: "eme_log",
-                message: message
+                message: {
+                    eme_source: source,
+                    eme_log: message,
+                    eme_indent: indent
+                }
             });
         }
     };

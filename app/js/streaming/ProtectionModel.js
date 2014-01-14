@@ -38,6 +38,7 @@ MediaPlayer.models.ProtectionModel = function () {
         addKeySession: function (kid, mediaCodec, initData) {
             var session = null;
 
+            this.debug.emeLog("J", "MediaKeys.createSession(" + mediaCodec + ", initData[" + initData.length + "])");
             session = this.protectionExt.createSession(keySystems[kid].keys, mediaCodec, initData);
 
             this.protectionExt.listenToKeyAdded(session, keyAddedListener);
@@ -53,9 +54,10 @@ MediaPlayer.models.ProtectionModel = function () {
         addKeySystem: function (kid, contentProtectionData, keySystemDesc) {
             var keysLocal = null;
 
-            this.debug.emeLog("Create and Set MediaKeys for " + keySystemDesc.keysTypeString);
+            this.debug.emeLog("J", "new MediaKeys (" + keySystemDesc.keysTypeString + ")");
             keysLocal = this.protectionExt.createMediaKeys(keySystemDesc.keysTypeString);
 
+            this.debug.emeLog("V", "VideoElement.setMediaKeys()");
             this.protectionExt.setMediaKey(element, keysLocal);
 
             keySystems[kid] = {
