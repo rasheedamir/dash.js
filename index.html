@@ -43,6 +43,9 @@
     <!-- https://github.com/eu81273/angular.treeview -->
     <script src="app/lib/angular.treeview/angular.treeview.min.js"></script>
 
+    <!-- https://rawgithub.com/Luegg/angularjs-scroll-glue/master/src/scrollglue.js -->
+    <script src="app/lib/scrollglue.js"></script>
+
     <!-- Player -->
     <script src="app/js/streaming/MediaPlayer.js"></script>
     <script src="app/js/streaming/Context.js"></script>
@@ -304,7 +307,7 @@
                     </div>
                 </div>
                 <div ng-switch on="showEME">
-                    <div id="emeDebug" class="panel-body panel-stats" ng-switch-when="true">
+                    <div scroll-glue id="emeDebug" class="panel-body panel-stats" ng-switch-when="true">
                         <span class="panel-title player-text">[J] = Javascript Player</span>
                         <span class="panel-title video-text">[V] = Video Element</span>
                         <span class="panel-title cdm-text">[C] = Content Decryption Module (CDM)</span>

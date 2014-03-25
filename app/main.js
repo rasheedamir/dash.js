@@ -41,7 +41,8 @@ var app = angular.module('DashPlayer', [
     'DashContributorsService',
     'DashPlayerLibrariesService',
     'DashShowcaseLibrariesService',
-    'angularTreeview'
+    'angularTreeview',
+    'luegg.directives'
 ]);
 
 app.directive('chart', function() {
