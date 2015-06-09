@@ -40,6 +40,7 @@ MediaPlayer.dependencies.Stream = function () {
         isInitialized = false,
         protectionController,
         ownProtectionController = false,
+        eventCallbacks,
 
         eventController = null,
 
@@ -112,6 +113,7 @@ MediaPlayer.dependencies.Stream = function () {
                 events;
 
             eventController = self.system.getObject("eventController");
+            eventController.init(eventCallbacks);
             events = self.adapter.getEventsFor(manifest, streamInfo);
             eventController.addInlineEvents(events);
 
@@ -282,8 +284,9 @@ MediaPlayer.dependencies.Stream = function () {
             this[MediaPlayer.dependencies.ProtectionController.eventList.ENAME_PROTECTION_ERROR] = onProtectionError.bind(this);
         },
 
-        initialize: function(strmInfo, protectionCtrl, protectionData) {
+        initialize: function(strmInfo, eventCBs, protectionCtrl, protectionData) {
             streamInfo = strmInfo;
+            eventCallbacks = eventCBs;
             if (this.capabilities.supportsEncryptedMedia()) {
                 if (!protectionCtrl) {
                     protectionCtrl = this.system.getObject("protectionController");

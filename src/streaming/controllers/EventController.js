@@ -40,6 +40,7 @@ MediaPlayer.dependencies.EventController = function(){
         presentationTimeThreshold = refreshDelay / 1000,
         MPD_RELOAD_SCHEME = "urn:mpeg:dash:event:2012",
         MPD_RELOAD_VALUE = 1,
+        eventCallbacks,
 
         reset = function() {
             clear();
@@ -127,6 +128,7 @@ MediaPlayer.dependencies.EventController = function(){
                             self.log("Start Event " + eventId + " at " + currentVideoTime);
                             if (curr.duration > 0) activeEvents[eventId] = curr;
                             if (curr.eventStream.schemeIdUri == MPD_RELOAD_SCHEME && curr.eventStream.value == MPD_RELOAD_VALUE) refreshManifest.call(this);
+                            else if (eventCallbacks.hasOwnProperty(curr.eventStream.schemeIdUri)) eventCallbacks[curr.eventStream.schemeIdUri](curr);
                             delete events[eventId];
                         }
                     }
@@ -178,7 +180,10 @@ MediaPlayer.dependencies.EventController = function(){
         addInbandEvents : addInbandEvents,
         reset : reset,
         clear : clear,
-        start: start
+        start: start,
+        init: function(eventCBs) {
+            eventCallbacks = eventCBs;
+        }
     };
 
 };

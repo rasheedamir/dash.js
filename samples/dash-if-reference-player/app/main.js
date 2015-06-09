@@ -541,6 +541,11 @@ app.controller('DashController', function($scope, Sources, Notes, Contributors, 
     player.attachView(video);
     player.setAutoPlay(true);
 
+    player.registerForEventStream("urn:scte:scte35:2013a:xml", function (event) {
+        var x = event;
+        var y = 1;
+    });
+
     ////////////////////////////////////////
     //
     // Player Methods

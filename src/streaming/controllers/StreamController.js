@@ -49,6 +49,7 @@
         mediaSource,
         UTCTimingSources,
         useManifestDateHeaderTimeSource,
+        eventCallbacks,
 
         attachEvents = function (stream) {
             stream.subscribe(MediaPlayer.dependencies.Stream.eventList.ENAME_STREAM_UPDATED, this.liveEdgeFinder);
@@ -330,7 +331,7 @@
                     // introduced in the updated manifest, so we need to create a new Stream and perform all the initialization operations
                     if (!stream) {
                         stream = self.system.getObject("stream");
-                        stream.initialize(streamInfo, protectionController, protectionData);
+                        stream.initialize(streamInfo, eventCallbacks, protectionController, protectionData);
                         stream.subscribe(MediaPlayer.dependencies.Stream.eventList.ENAME_STREAM_UPDATED, self);
                         remainingStreams.push(stream);
 
@@ -473,8 +474,9 @@
             })[0];
         },
 
-        initialize: function (autoPl, protCtrl, protData) {
+        initialize: function (autoPl, eventCBs, protCtrl, protData) {
             autoPlay = autoPl;
+            eventCallbacks = eventCBs;
             protectionController = protCtrl;
             protectionData = protData;
             this.timeSyncController.subscribe(MediaPlayer.dependencies.TimeSyncController.eventList.ENAME_TIME_SYNCHRONIZATION_COMPLETED, this.timelineConverter);

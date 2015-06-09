@@ -88,6 +88,7 @@ MediaPlayer = function (context) {
         UTCTimingSources = [],
         liveDelayFragmentCount = 4,
         usePresentationDelay = false,
+        eventCallbacks = {},
 
         isReady = function () {
             return (!!element && !!source);
@@ -116,7 +117,7 @@ MediaPlayer = function (context) {
             playbackController.subscribe(MediaPlayer.dependencies.PlaybackController.eventList.ENAME_PLAYBACK_ERROR, streamController);
             playbackController.setLiveDelayAttributes(liveDelayFragmentCount, usePresentationDelay);
 
-            streamController.initialize(autoPlay, protectionController, protectionData);
+            streamController.initialize(autoPlay, eventCallbacks, protectionController, protectionData);
             DOMStorage.checkInitialBitrate();
             if (typeof source === "string") {
                 streamController.load(source);
@@ -696,6 +697,10 @@ MediaPlayer = function (context) {
          */
         createProtection: function() {
             return system.getObject("protectionController");
+        },
+
+        registerForEventStream: function(schemeIdUri, callback) {
+            eventCallbacks[schemeIdUri] = callback;
         },
 
         /**
