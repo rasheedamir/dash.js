@@ -656,18 +656,27 @@ Dash.dependencies.DashManifestExtensions.prototype = {
                     eventStream.value = eventStreams[i].value;
                 }
                 for(var j = 0; j < eventStreams[i].Event_asArray.length; j += 1) {
-                    var event = new Dash.vo.Event();
+                    var event = new Dash.vo.Event(),
+                        eventData = eventStreams[i].Event_asArray[j],
+                        keys = Object.keys(eventData);
                     event.presentationTime = 0;
                     event.eventStream = eventStream;
+                    event.messageData = {};
 
-                    if(eventStreams[i].Event_asArray[j].hasOwnProperty("presentationTime")) {
-                        event.presentationTime = eventStreams[i].Event_asArray[j].presentationTime;
-                    }
-                    if(eventStreams[i].Event_asArray[j].hasOwnProperty("duration")) {
-                        event.duration = eventStreams[i].Event_asArray[j].duration;
-                    }
-                    if(eventStreams[i].Event_asArray[j].hasOwnProperty("id")) {
-                        event.id = eventStreams[i].Event_asArray[j].id;
+                    for (var k = 0; k < keys.length; k += 1) {
+                        var key = keys[k];
+                        if (key === "presentationTime") {
+                            event.presentationTime = eventData.presentationTime;
+                        }
+                        else if (key === "duration") {
+                            event.duration = eventData.duration;
+                        }
+                        else if (key === "id") {
+                            event.id = eventData.id;
+                        }
+                        else if (key !== "__cnt") {
+                            event.messageData[key] = eventData[key];
+                        }
                     }
                     events.push(event);
                 }
