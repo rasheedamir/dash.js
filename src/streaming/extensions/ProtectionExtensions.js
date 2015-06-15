@@ -110,15 +110,17 @@ MediaPlayer.dependencies.ProtectionExtensions.prototype = {
     /**
      * Check equality of initData array buffers.
      *
-     * @param initData1 first initData
-     * @param initData2 second initData
+     * @param initData1 {ArrayBuffer} first initData
+     * @param initData2 {ArrayBuffer} second initData
      * @returns {boolean} true if the initData arrays are equal in size and
      * contents, false otherwise
      */
     initDataEquals: function(initData1, initData2) {
         if (initData1.byteLength === initData2.byteLength) {
-            for (var j = 0; j < initData1.byteLength; j++) {
-                if (initData1[j] !== initData2[j]) {
+            var data1 = new Uint8Array(initData1),
+                data2 = new Uint8Array(initData2);
+            for (var j = 0; j < data1.length; j++) {
+                if (data1[j] !== data2[j]) {
                     return false;
                 }
             }

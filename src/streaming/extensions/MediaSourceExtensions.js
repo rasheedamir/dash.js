@@ -89,6 +89,6 @@ MediaPlayer.dependencies.MediaSourceExtensions.prototype = {
             if (buffers[i].updating) return;
         }
 
-        source.endOfStream();
+        //source.endOfStream();
     }
 };
